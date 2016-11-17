@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<oeuvres>
+   <oeuvre>
+      <nom>La Joconde</nom>
+      <artiste>Leonard de Vinci</artiste>
+      <description>La Joconde est le portrait d'une jeune femme, sur fond d'un paysage montagneux aux horizons lointains et brumeux. Elle est disposee de trois-quarts et representee jusqu'a la taille, bras et mains compris, regardant le spectateur, ce qui est relativement nouveau a l'epoque et rompt avec les portraits jusque la repandus, qui coupent le buste a hauteur des epaules ou de la poitrine et sont entierement de profil.</description>
+	  <date>1506</date>
+   </oeuvre>
+	
+   <oeuvre>
+      <nom>Le Cri</nom>
+      <artiste>Edvard Munch</artiste>
+      <description>Munch executa quatre versions du tableau, dont les plus fameuses sont une tempera sur carton au musee Munch d'Oslo (de 83,52 cm de haut sur 66 cm de large), et une peinture a l'huile, tempera et pastel a la Galerie nationale d'Oslo (91 cm de haut sur 73,5 cm de large). Une troisieme version appartient egalement au musee Munch</description>
+	  <date>1893</date>
+   </oeuvre>
+	
+</oeuvres>
