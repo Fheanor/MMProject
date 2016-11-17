@@ -79,5 +79,8 @@ public class Tools {
         return context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
     }
 
+    public static int randomInt(){
+        return (int)Math.random()*10000;
+    }
 
 }

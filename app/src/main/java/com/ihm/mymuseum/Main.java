@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.ihm.mymuseum.qrcode.QrCodeActivity;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Main extends Activity {
     private static final int CAMERA_PERMISSION = 1;
@@ -24,11 +26,25 @@ public class Main extends Activity {
 
     private List<Oeuvre> oeuvres;
 
+    private boolean isInitialized = false;
+    private boolean doubleBackToExitPressedOnce = false;
+
     private TextView tv;
+
+    public static final String EXTRA_INIT = "init";
+
+    private Logger log = Logger.getAnonymousLogger();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState != null) isInitialized = savedInstanceState.getBoolean(EXTRA_INIT, false);
+        if (!isInitialized) {
+            isInitialized = true;
+            startActivity(new Intent(this, SplashScreenActivity.class));
+        }
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         //setSupportActionBar(toolbar);
@@ -55,8 +71,6 @@ public class Main extends Activity {
                         String.valueOf(Tools.getPreferrence(Main.this.getApplicationContext()).getBoolean("Malvoyant", false)));
             }
         });
-
-
 
     }
 
@@ -102,6 +116,31 @@ public class Main extends Activity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 1000);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(EXTRA_INIT, isInitialized);
+        log.info("saveInstance " + String.valueOf(isInitialized));
     }
 
 }

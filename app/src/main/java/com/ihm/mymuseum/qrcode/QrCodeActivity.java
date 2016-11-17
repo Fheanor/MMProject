@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.ihm.mymuseum.R;
+import com.ihm.mymuseum.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
 
     public static final String MESSAGE = "message";
     public static final int CODE_OK = 1;
-    public static final int CODE_REQUEST = 1;
+    public static final int CODE_REQUEST = Tools.randomInt();
 
     @Override
     public void onCreate(Bundle state) {
