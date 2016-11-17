@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ public class Main extends Activity {
     private Class<?> classActivity;
 
     private List<Oeuvre> oeuvres;
+
+    private TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,23 @@ public class Main extends Activity {
             }
         });
         oeuvres = Tools.getOeuvres(getAssets(), "Oeuvres.xml");
+
+        tv = (TextView) findViewById(R.id.showPrefTxt);
+
+        Button btn = (Button) findViewById(R.id.btnPref);
+        btn.setText("Show pref");
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Boolean m = Tools.getPreferrence(Main.this.getApplicationContext()).getBoolean("Malvoyant", false);
+                Tools.setPreference(Main.this.getApplicationContext(), "Malvoyant", !m);
+                tv.setText(tv.getText() + "\n" + "Malvoyant: " +
+                        String.valueOf(Tools.getPreferrence(Main.this.getApplicationContext()).getBoolean("Malvoyant", false)));
+            }
+        });
+
+
+
     }
 
     public void launchActivity(Class<?> cActivity) { //TODO
