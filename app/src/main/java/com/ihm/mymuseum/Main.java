@@ -31,19 +31,11 @@ public class Main extends Activity {
 
     private TextView tv;
 
-    public static final String EXTRA_INIT = "init";
-
     private Logger log = Logger.getAnonymousLogger();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(savedInstanceState != null) isInitialized = savedInstanceState.getBoolean(EXTRA_INIT, false);
-        if (!isInitialized) {
-            isInitialized = true;
-            startActivity(new Intent(this, SplashScreenActivity.class));
-        }
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
@@ -59,6 +51,8 @@ public class Main extends Activity {
         oeuvres = Tools.getOeuvres(getAssets(), "Oeuvres.xml");
 
         tv = (TextView) findViewById(R.id.showPrefTxt);
+        tv.setText(String.valueOf(Tools.getPreferrence(this).getBoolean(getString(R.string.pref_audio_mode),false)) + " "
+                   + Tools.getPreferrence(this).getString(getString(R.string.pref_categorie),"category not assigned"));
 
         Button btn = (Button) findViewById(R.id.btnPref);
         btn.setText("Show pref");
@@ -134,13 +128,6 @@ public class Main extends Activity {
                 doubleBackToExitPressedOnce=false;
             }
         }, 1000);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(EXTRA_INIT, isInitialized);
-        log.info("saveInstance " + String.valueOf(isInitialized));
     }
 
 }

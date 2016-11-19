@@ -9,7 +9,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import static com.ihm.mymuseum.Main.EXTRA_INIT;
+import static com.ihm.mymuseum.settings.PreferenceActivity.EXTRA_INIT;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
