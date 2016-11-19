@@ -8,6 +8,7 @@ public class GestureTimer extends Thread {
 
     private long maxTime;
     private boolean timeFinished = false;
+    private boolean gestureFinished = false;
     private OnFinishedListener listener;
 
     public GestureTimer(long maxTime) {
@@ -21,6 +22,9 @@ public class GestureTimer extends Thread {
                 this.wait(maxTime);
                 timeFinished = true;
             }
+            if(!gestureFinished){
+                synchronized (this){ this.wait(); }
+            }
             if(listener != null) listener.onFinished();
 
         }catch(InterruptedException e){
@@ -31,6 +35,11 @@ public class GestureTimer extends Thread {
 
     public void setOnFinishedListener(OnFinishedListener listener){
         this.listener = listener;
+    }
+
+    public synchronized void setIsGestureFinished(boolean b){
+        gestureFinished = b;
+        if(timeFinished && gestureFinished){ this.notify(); }
     }
 
     public synchronized boolean isTimeFinished(){

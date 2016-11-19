@@ -17,10 +17,10 @@ import android.widget.Toast;
 import com.ihm.mymuseum.R;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import static android.content.ContentValues.TAG;
+import static com.ihm.mymuseum.R.id.gestures;
 import static com.ihm.mymuseum.R.raw.gesture;
 
 /**
@@ -33,7 +33,6 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
 
     private static final int MAX_TIME = 1000;
 
-    private List<Gesture> gestures = new ArrayList<>();
     private Gesture currentGesture;
 
     private GestureLibrary gLib;
@@ -52,9 +51,11 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
             finish();
         }
 
+        currentGesture = new Gesture();
+
         img = (ImageView)findViewById(R.id.imageView2);
 
-        final GestureOverlayView gestureView = (GestureOverlayView) findViewById(R.id.gestures);
+        final GestureOverlayView gestureView = (GestureOverlayView) findViewById(gestures);
 
         gestureView.addOnGestureListener(new GestureOverlayView.OnGestureListener() {
             @Override
@@ -66,22 +67,19 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
                 timer = new GestureTimer(MAX_TIME);
                 timer.setOnFinishedListener(GestureActivity.this);
                 timer.start();
-
-
             }
 
             @Override
             public void onGestureEnded(GestureOverlayView overlay, MotionEvent event) {
-                gestures.add(overlay.getGesture());
 
-                currentGesture = new Gesture();
-                for(Gesture g : gestures){
-                    for(GestureStroke gs : g.getStrokes()){
-                        currentGesture.addStroke(gs);
-                    }
+                for(GestureStroke gs : overlay.getGesture().getStrokes()){
+                    currentGesture.addStroke(gs);
                 }
 
+
+
                 img.setImageBitmap(currentGesture.toBitmap(50,50,1, R.color.color_splash));
+                timer.setIsGestureFinished(true);
             }
 
             @Override
@@ -94,15 +92,12 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
 
     @Override
     public void onFinished(){
-        gestures.clear();
-        runOnUiThread(new Runnable() {
-            public void run() {
-                img.setImageBitmap(null);
-            }
-        });
         ArrayList<Prediction> predictions = gLib.recognize(currentGesture);
 
-        Logger.getAnonymousLogger().info("Perform gesture");
+        Logger.getAnonymousLogger().info("" + predictions.size());
+        for(Prediction p : predictions){
+            Logger.getAnonymousLogger().info(p.name + " "+ p.score);
+        }
 
         // one prediction needed
         if (predictions.size() > 0) {
@@ -113,8 +108,6 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
                 // and action
                 runOnUiThread(new Runnable() {
                     public void run() {
-
-                        img.setImageBitmap(null);
                         Toast.makeText(GestureActivity.this, prediction.name,
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -122,5 +115,12 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
 
             }
         }
+
+        currentGesture = new Gesture();
+        runOnUiThread(new Runnable() {
+            public void run() {
+                img.setImageBitmap(null);
+            }
+        });
     }
 }
