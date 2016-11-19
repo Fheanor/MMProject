@@ -11,9 +11,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ihm.mymuseum.gesture.GestureActivity;
 import com.ihm.mymuseum.qrcode.QrCodeActivity;
 
 import java.util.List;
@@ -54,6 +56,13 @@ public class Main extends Activity {
         String audioMode = "Mode audio: " + String.valueOf(Tools.getPreferrence(this).getBoolean(getString(R.string.pref_audio_mode),false));
         String categorie = "Catégorie: " + Tools.getPreferrence(this).getString(getString(R.string.pref_categorie),"category not assigned");
         tv.setText( audioMode + "\n" + categorie);
+
+        ((Button)findViewById(R.id.btnGesture)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Main.this, GestureActivity.class));
+            }
+        });
 
     }
 

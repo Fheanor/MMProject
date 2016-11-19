@@ -31,4 +31,12 @@
         android:layout_marginStart="11dp"
         android:layout_marginTop="15dp" />
 
+    <Button
+        android:text="Geste"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnGesture"
+        android:layout_below="@+id/showPrefTxt"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
