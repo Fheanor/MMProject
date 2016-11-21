@@ -17,4 +17,25 @@
         <!--<item>Radial Progress</item>-->
         <!--<item>Semi Circular Radial Menu</item>-->
     </string-array>
+
+    <string name="hint_malvoyant_fragment">Dite \"Mode audio\" pour activer le mode malvoyant</string>
+    <string name="quitter_malvoyant_fragment">Quitter</string>
+    <string name="suivant_malvoyant_fragment">Suivant</string>
+
+
+    <string name="enfant_categorie_fragment">Enfant</string>
+    <string name="adulte_categorie_fragment">Adulte</string>
+
+
+
+    <string name="pref_audio_mode">audioMode</string>
+    <string name="pref_categorie">humanCategorie</string>
+    <string name="pref_value_enfant">enfant</string>
+    <string name="pref_value_adulte">adulte</string>
+
+
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
