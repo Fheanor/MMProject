@@ -1,0 +1,2 @@
+Le mode malvoyant est activé.
+Veuillez dire "Adulte" ou "Enfant" pour choisir le type d'utilisateur.
