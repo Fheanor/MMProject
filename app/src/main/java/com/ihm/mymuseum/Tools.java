@@ -28,8 +28,9 @@ public class Tools {
     public static boolean userSelects = false;
     public static boolean isEnfant = false;
     public static boolean isMalvoyant = false;
-    public static String oeuvre;
+    public static Oeuvre oeuvre;
     public static boolean initGesture=false;
+    public static String currentInfo="";
 
 
     public static List<Oeuvre> getOeuvres(AssetManager am, String filename){

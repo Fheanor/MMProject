@@ -45,20 +45,10 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
     private ImageView img;
 
     private Speaker speaker;
-    private List<Oeuvre> oeuvres;
-    private Oeuvre oeuvre;
-    private String informations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        oeuvres = Tools.getOeuvres(this.getAssets(), "Oeuvres.xml");
-        for(Oeuvre oeuvre : oeuvres) {
-            if (oeuvre.getNom().equals(Tools.oeuvre)) {
-                this.oeuvre = oeuvre;
-            }
-        }
         speaker = new Speaker(this);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -138,15 +128,15 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
 
             switch (prediction.name){
                 case "A":
-                    informations = oeuvre.getInfoArtiste();
+                    Tools.currentInfo = Tools.oeuvre.getInfoArtiste();
                     speakOut();
                     break;
                 case "O":
-                    informations = oeuvre.getDescription();
+                    Tools.currentInfo = Tools.oeuvre.getDescription();
                     speakOut();
                     break;
                 case "J":
-                    informations = oeuvre.getAudiodescription();
+                    Tools.currentInfo = Tools.oeuvre.getAudiodescription();
                     speakOut();
                     break;
                 case "Z":
@@ -176,7 +166,7 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
     public void speakOut() {
         stopSpeak();
         if(PermissionHandler.checkPermission(this,PermissionHandler.RECORD_AUDIO)) {
-            speaker.speak(this.informations);
+            speaker.speak(Tools.currentInfo);
         }else {
             PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,this);
         }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.ihm.mymuseum.Oeuvre;
 import com.ihm.mymuseum.R;
 import com.ihm.mymuseum.Tools;
 import com.ihm.mymuseum.gesture.GestureActivity;
@@ -25,6 +26,7 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
     private static final String CAMERA_ID = "CAMERA_ID";
 
     private Speaker speaker;
+    private List<Oeuvre> oeuvres;
 
     private ZXingScannerView mScannerView;
     private boolean mFlash;
@@ -40,6 +42,7 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
+        oeuvres = Tools.getOeuvres(this.getAssets(), "Oeuvres.xml");
         if(state != null) {
             mFlash = state.getBoolean(FLASH_STATE, false);
             mAutoFocus = state.getBoolean(AUTO_FOCUS_STATE, true);
@@ -87,11 +90,16 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
         setResult(CODE_OK, intent);
         // Launch the circular menu !
         //finish();
-        Tools.oeuvre=rawResult.getText();
+        String result = rawResult.getText();
+        for(Oeuvre oeuvre : oeuvres) {
+            if (oeuvre.getNom().equals(result)) {
+                Tools.oeuvre = oeuvre;
+            }
+        }
         if(!Tools.isMalvoyant) {
             startActivity(new Intent(this, RadialMenuActivity.class));
         }else{
-            this.informations = Tools.oeuvre;
+            this.informations = Tools.oeuvre.getNom();
             speakOut();
             if(!Tools.initGesture) {
                 this.informations = speaker.readFile(R.raw.gesturemode);

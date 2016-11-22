@@ -18,6 +18,8 @@ public class Oeuvre {
         description = "";
         dateCreation = "";
         artiste = "";
+        infoArtiste = "";
+        audiodescription = "";
     }
 
     public Oeuvre(String nom, String description, String creation, String artiste, String infoArtiste, String audiodescription){

@@ -25,9 +25,6 @@ import com.ihm.mymuseum.R;
 public class RadialMenuActivity extends FragmentActivity {
 
 	private Speaker speaker;
-	private List<Oeuvre> oeuvres;
-	private Oeuvre oeuvre;
-	private String informations;
 
 	//Variable declarations
 	private RadialMenuRenderer mRenderer;
@@ -40,12 +37,6 @@ public class RadialMenuActivity extends FragmentActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_holder);
-		oeuvres = Tools.getOeuvres(this.getAssets(), "Oeuvres.xml");
-		for(Oeuvre oeuvre : oeuvres) {
-			if (oeuvre.getNom().equals(Tools.oeuvre)) {
-				this.oeuvre = oeuvre;
-			}
-		}
 		speaker = new Speaker(this);
 
 		//Init the frame layout
@@ -72,8 +63,8 @@ public class RadialMenuActivity extends FragmentActivity {
 			public void onRadailMenuClickedListener(String id) {
 				//Can edit based on preference. Also can add animations here.
 				getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+				Tools.currentInfo = Tools.oeuvre.getDescription();
 				getSupportFragmentManager().beginTransaction().replace(mHolderLayout.getId(), new RadialMenuOeuvreFragment()).commit();
-				informations = oeuvre.getDescription();
 				speakOut();
 			}
 		});
@@ -83,8 +74,8 @@ public class RadialMenuActivity extends FragmentActivity {
 			public void onRadailMenuClickedListener(String id) {
 				//Can edit based on preference. Also can add animations here.
 				getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+				Tools.currentInfo = Tools.oeuvre.getInfoArtiste();
 				getSupportFragmentManager().beginTransaction().replace(mHolderLayout.getId(), new RadialMenuOeuvreFragment()).commit();
-				informations = oeuvre.getInfoArtiste();
 				speakOut();
 			}
 		});
@@ -117,7 +108,7 @@ public class RadialMenuActivity extends FragmentActivity {
 	public void speakOut() {
 		stopSpeak();
 		if(PermissionHandler.checkPermission(this,PermissionHandler.RECORD_AUDIO)) {
-			speaker.speak(this.informations);
+			speaker.speak(Tools.currentInfo);
 		}else {
 			PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,this);
 		}

@@ -25,21 +25,13 @@ import java.util.List;
  */
 public class RadialMenuOeuvreFragment extends Fragment{
 
-	private List<Oeuvre> oeuvres;
 	private TextView tv;
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view  = inflater.inflate(R.layout.layout_oeuvre, container, false);
-		oeuvres = Tools.getOeuvres(getActivity().getAssets(), "Oeuvres.xml");
 		tv = (TextView) view.findViewById(R.id.TextViewOeuvre);
-		String msg = Tools.oeuvre;
-		for(Oeuvre oeuvre : oeuvres) {
-			if (oeuvre.getNom().equals(msg)) {
-				tv.setText(oeuvre.toString());
-			}
-		}
+		tv.setText(Tools.oeuvre.toString() + Tools.currentInfo);
 		return view;
 	}
 
