@@ -27,14 +27,13 @@ public class Tools {
     private static Context context;
 
     /*TODO : use SharedPreferences instead of this ! */
-    public static boolean configSelects = false;
-    public static boolean userSelects = false;
     public static Oeuvre oeuvre;
     public static boolean initGesture=false;
     public static String currentInfo="";
 
     public static void setContext(Context context){
         Tools.context = context;
+        Tools.initPreferences();
     }
 
     public static List<Oeuvre> getOeuvres(AssetManager am, String filename){
@@ -109,6 +108,11 @@ public class Tools {
 
     private static final String getString(@StringRes int resId) {
         return context.getResources().getString(resId);
+    }
+
+    private static void initPreferences(){
+        setPreference(R.string.pref_audio_mode, false);
+        setPreference(R.string.pref_category, "");
     }
 
 }

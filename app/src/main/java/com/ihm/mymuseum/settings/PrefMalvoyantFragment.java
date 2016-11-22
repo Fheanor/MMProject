@@ -19,6 +19,7 @@ import com.ihm.mymuseum.voiceCommands.VoiceCommandsListener;
 import com.ihm.mymuseum.voiceCommands.VoiceCommandsManager;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 
 public class PrefMalvoyantFragment extends PreferenceFragment{
@@ -112,42 +113,9 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
 
                 @Override
                 public void onResults(Bundle results) {
-                    if (results != null && Tools.configSelects && Tools.userSelects) {
-                        stopSpeechRecognition();
-                    } else if (results != null && Tools.configSelects && !Tools.userSelects) {
-                        setResults(results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION));
-                        switch (this.result) {
-                            case "enfant":
-                            case "enfants":
-                            case "Enfant":
-                            case "Enfants":
-                                Log.i(TAG, "Keyword recognised : " + this.result);
-                                // Destroy SpeechRecognizer & Valid result
-                                Tools.userSelects=true;
-                                Tools.setPreference(R.string.pref_category, R.string.pref_value_child);
-                                stopSpeechRecognition();
-                                speakOut();
-                                listener.onLoadActivity(getActivity(), Main.class);
-                                break;
-                            case "adulte":
-                            case "adultes":
-                            case "Adulte":
-                            case "Adultes":
-                                Log.i(TAG, "Keyword recognised : " + this.result);
-                                // Destroy SpeechRecognizer & Valid result
-                                Tools.userSelects=true;
-                                Tools.setPreference(R.string.pref_category, R.string.pref_value_adult);
-                                stopSpeechRecognition();
-                                speakOut();
-                                listener.onLoadActivity(getActivity(), Main.class);
-                                break;
-                            default:
-                                Log.i(TAG, "Try to select user : " + this.result);
-                                // Give instruction and listen again
-                                speakOut();
-                                break;
-                        }
-                    } else if (results != null && !Tools.configSelects) {
+                    if(results == null) return;
+
+                    if (!Tools.getBooleanFromPreference(R.string.pref_audio_mode,false)) {
                         setResults(results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION));
                         switch (this.result) {
                             case "mode audio":
@@ -160,7 +128,6 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
                             case "Malvoyantes":
                                 Log.i(TAG, "Keyword recognised : " + this.result);
                                 // Set the configuration, Give the next instruction and listen again
-                                Tools.configSelects=true;
                                 Tools.setPreference(R.string.pref_audio_mode, true);
                                 speakOut();
                                 break;
@@ -170,12 +137,45 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
                                 speakOut();
                                 break;
                         }
+                    } else if (Tools.getStringFromPreference(R.string.pref_category, "").equals("")) {
+                        setResults(results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION));
+                        switch (this.result) {
+                            case "enfant":
+                            case "enfants":
+                            case "Enfant":
+                            case "Enfants":
+                                Log.i(TAG, "Keyword recognised : " + this.result);
+                                // Destroy SpeechRecognizer & Valid result
+                                Tools.setPreference(R.string.pref_category, getString(R.string.pref_value_child));
+                                stopSpeechRecognition();
+                                speakOut();
+                                listener.onLoadActivity(getActivity(), Main.class);
+                                break;
+                            case "adulte":
+                            case "adultes":
+                            case "Adulte":
+                            case "Adultes":
+                                Log.i(TAG, "Keyword recognised : " + this.result);
+                                // Destroy SpeechRecognizer & Valid result
+                                Logger.getAnonymousLogger().info("Adult setted");
+                                Tools.setPreference(R.string.pref_category, getString(R.string.pref_value_adult));
+                                stopSpeechRecognition();
+                                speakOut();
+                                listener.onLoadActivity(getActivity(), Main.class);
+                                break;
+                            default:
+                                Log.i(TAG, "Try to select user : " + this.result);
+                                // Give instruction and listen again
+                                speakOut();
+                                break;
+                        }
+                    } else {
+                        stopSpeechRecognition();
                     }
                 }
 
                 @Override
                 public synchronized void onError (int error) {
-
                     giveFirstInstructions();
 
                     if (error == SpeechRecognizer.ERROR_RECOGNIZER_BUSY) {
@@ -211,9 +211,10 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
     public void speakOut() {
         if(!speaker.isSpeaking()) {
             stopSpeechRecognition();
-            String humanCategory = Tools.getStringFromPreference(R.string.pref_category, getString(R.string.pref_value_adult));
+            String humanCategory = Tools.getStringFromPreference(R.string.pref_category, "");
+            Logger.getAnonymousLogger().info("humanCategory: " + humanCategory);
 
-            if(!Tools.configSelects) {
+            if(!Tools.getBooleanFromPreference(R.string.pref_audio_mode, false)) {
                 speaker.speak(speaker.readFile(R.raw.configuration));
                 try {
                     Thread.currentThread().sleep(3300);
@@ -221,7 +222,7 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
                     e.printStackTrace();
                 }
                 startSpeechRecognition();
-            }else if(!Tools.userSelects) {
+            }else if(humanCategory.equals("")) {
                 speaker.speak(speaker.readFile(R.raw.utilisateur));
                 try {
                     Thread.currentThread().sleep(6100);
