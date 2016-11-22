@@ -32,11 +32,6 @@
         </activity>
         <activity android:name=".menu.RadialMenuActivity" android:label="Radial Menu V2"/>
         <activity android:name=".MainActivity"/>
-        <activity
-            android:name="com.ihm.mymuseum.voiceCommands.VoiceCommandsActivity"
-            android:label="voice commands" >
-        </activity>
-        <activity android:name=".MainActivityTest"/>
     </application>
 
 </manifest>

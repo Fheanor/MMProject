@@ -23,6 +23,12 @@ public class Tools {
 
     private static final String PREFERENCE_NAME = "Settings";
 
+    /*TODO : use SharedPreferences instead of this ! */
+    public static boolean configSelects = false;
+    public static boolean userSelects = false;
+    public static boolean isEnfant = false;
+
+
     public static List<Oeuvre> getOeuvres(AssetManager am, String filename){
         List<Oeuvre> oeuvres = new ArrayList<>();
 

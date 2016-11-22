@@ -25,42 +25,41 @@ import java.util.ArrayList;
  */
 public class VoiceCommandsManager {
 
-    VoiceCommandsActivity speechRecognizerActivity;
+    //VoiceCommandsActivity speechRecognizerActivity;
 
     protected AudioManager audioManager;
     protected SpeechRecognizer speechRecognizer;
     protected Intent speechRecognizerIntent;
 
-    private Speaker speaker;
+    //private Speaker speaker;
 
     protected boolean isListening;
     private boolean isStreamSolo;
     private static boolean first=true;
     private boolean mute=true;
 
-    private final static String TAG="SpeechRecognizerManager";
+    private final static String TAG="VoiceCommandsManager";
 
 
-    public VoiceCommandsManager(Context context)
+    public VoiceCommandsManager(Context context, VoiceCommandsListener listener)
     {
         Log.i(TAG, " is instantiated." );
 
-        this.speechRecognizerActivity = (VoiceCommandsActivity) context;
-        speaker = new Speaker(this.speechRecognizerActivity);
+        //this.speechRecognizerActivity = (VoiceCommandsActivity) context;
+        //speaker = new Speaker(this.speechRecognizerActivity);
         audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
-        speechRecognizer.setRecognitionListener(new SpeechRecognitionListener());
+        speechRecognizer.setRecognitionListener(listener);
         speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, context.getPackageName());
         // Give instruction
-        speaker.speakOut(R.raw.martin_luther_king);
+        //speaker.speakOut(R.raw.martin_luther_king);
         startListening();
 
     }
 
-    public void listenAgain()
-    {
+    public void listenAgain() {
         if(isListening) {
             isListening = false;
             speechRecognizer.cancel();
@@ -90,7 +89,7 @@ public class VoiceCommandsManager {
 
     public void destroy() {
         isListening = false;
-        Log.i(TAG,"Here");
+        Log.i(TAG,"Destroy");
         if (true) {
             Log.i(TAG,"Nomute");
             audioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
@@ -114,157 +113,17 @@ public class VoiceCommandsManager {
         return isListening;
     }
 
-    public void mute(boolean mute)
-    {
+    public void mute(boolean mute) {
         mute=mute;
     }
 
-    public boolean isInMuteMode()
-    {
+    public boolean isInMuteMode() {
         return mute;
     }
 
 
 
 
-    /**
-     * Created by Coralie on 19/11/2016.
-     */
-    protected class SpeechRecognitionListener implements RecognitionListener
-    {
 
-        private String result;
-        private final String NO_RESULT = "NO_RESULT";
-
-
-        public void setResults(ArrayList<String> results) {
-            if(results!=null && results.size()>0)
-            {
-                result = results.get(0);
-            }
-            else
-                result = NO_RESULT;
-        }
-
-        public String getResults(){
-            return result;
-        }
-
-        @Override
-        public void onBeginningOfSpeech() {}
-
-        @Override
-        public void onBufferReceived(byte[] buffer) {}
-
-        @Override
-        public void onEndOfSpeech() {}
-
-        @Override
-        public synchronized void onError(int error)
-        {
-            if(error==SpeechRecognizer.ERROR_RECOGNIZER_BUSY) {
-                ArrayList<String> errorList=new ArrayList<String>(1);
-                errorList.add("ERROR RECOGNIZER BUSY");
-                setResults(errorList);
-                return;
-            }
-            if(error==SpeechRecognizer.ERROR_NO_MATCH) {
-                setResults(null);
-            }
-            if(error==SpeechRecognizer.ERROR_NETWORK) {
-                ArrayList<String> errorList=new ArrayList<String>(1);
-                errorList.add("STOPPED LISTENING");
-                setResults(errorList);
-            }
-            Log.d(TAG, "error = " + error);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    listenAgain();
-                }
-            },100);
-
-            if(first){
-                Log.i(TAG,"HERE");
-                speechRecognizerActivity.speakOut();
-                first = false;
-            }
-        }
-
-        @Override
-        public void onEvent(int eventType, Bundle params) {}
-
-        @Override
-        public void onPartialResults(Bundle partialResults) {}
-
-        @Override
-        public void onReadyForSpeech(Bundle params) {}
-
-        @Override
-        public void onResults(Bundle results)
-        {
-            if(results!=null && speechRecognizerActivity.isConfigSelected() && speechRecognizerActivity.isUserSelected()) {
-                speechRecognizerActivity.stopSpeechRecognition();
-            }else if(results!=null && speechRecognizerActivity.isConfigSelected() && !speechRecognizerActivity.isUserSelected()) {
-                setResults(results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION));
-                switch (this.result) {
-                    case "enfant":
-                    case "enfants":
-                    case "Enfant":
-                    case "Enfants":
-                        Log.i(TAG, "Keyword recognised : " + this.result);
-                        // Destroy SpeechRecognizer & Valid result
-                        speechRecognizerActivity.setEnfant(true);
-                        speechRecognizerActivity.stopSpeechRecognition();
-                        speechRecognizerActivity.speakOut();
-                        break;
-                    case "adulte":
-                    case "adultes":
-                    case "Adulte":
-                    case "Adultes":
-                        Log.i(TAG, "Keyword recognised : " + this.result);
-                        // Destroy SpeechRecognizer & Valid result
-                        speechRecognizerActivity.setEnfant(false);
-                        speechRecognizerActivity.stopSpeechRecognition();
-                        speechRecognizerActivity.speakOut();
-                        break;
-                    default:
-                        Log.i(TAG, "Try to select user : " + this.result);
-                        // Give instruction and listen again
-                        speechRecognizerActivity.speakOut();
-                        break;
-                }
-            }else if(results!=null && !speechRecognizerActivity.isConfigSelected()) {
-                setResults(results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION));
-                switch (this.result) {
-                    case "malvoyant":
-                    case "malvoyants":
-                    case "Malvoyant":
-                    case "Malvoyants":
-                    case "malvoyante":
-                    case "malvoyantes":
-                    case "Malvoyante":
-                    case "Malvoyantes":
-                        Log.i(TAG, "Keyword recognised : " + this.result);
-                        // Set the configuration, Give the next instruction and listen again
-                        speechRecognizerActivity.setMalvoyant(true);
-                        speechRecognizerActivity.speakOut();
-                        break;
-                    default:
-                        Log.i(TAG, "Try to config : " + this.result);
-                        // Give instruction and listen again
-                        speechRecognizerActivity.speakOut();
-                        break;
-                }
-
-            }
-
-
-        }
-
-        @Override
-        public void onRmsChanged(float rmsdB) {}
-
-    }
 }
 
