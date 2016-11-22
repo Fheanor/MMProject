@@ -14,9 +14,14 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.ihm.mymuseum.Oeuvre;
 import com.ihm.mymuseum.R;
+import com.ihm.mymuseum.Tools;
+import com.ihm.mymuseum.speaker.Speaker;
+import com.ihm.mymuseum.voiceCommands.PermissionHandler;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static android.content.ContentValues.TAG;
@@ -39,9 +44,23 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
 
     private ImageView img;
 
+    private Speaker speaker;
+    private List<Oeuvre> oeuvres;
+    private Oeuvre oeuvre;
+    private String informations;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        oeuvres = Tools.getOeuvres(this.getAssets(), "Oeuvres.xml");
+        for(Oeuvre oeuvre : oeuvres) {
+            if (oeuvre.getNom().equals(Tools.oeuvre)) {
+                this.oeuvre = oeuvre;
+            }
+        }
+        speaker = new Speaker(this);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_gesture);
 
@@ -94,15 +113,17 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
     public void onFinished(){
         ArrayList<Prediction> predictions = gLib.recognize(currentGesture);
 
-        Logger.getAnonymousLogger().info("" + predictions.size());
+        Logger.getAnonymousLogger().info("GESTURE PREDICTION : " + predictions.size());
+        /*
         for(Prediction p : predictions){
             Logger.getAnonymousLogger().info(p.name + " "+ p.score);
-        }
+        }*/
 
         // one prediction needed
         if (predictions.size() > 0) {
             final Prediction prediction = predictions.get(0);
             // checking prediction
+            Logger.getAnonymousLogger().info("PREDICTION : "+prediction.name);
 
             if (prediction.score > 1.0) {
                 // and action
@@ -114,6 +135,27 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
                 });
 
             }
+
+            switch (prediction.name){
+                case "A":
+                    informations = oeuvre.getInfoArtiste();
+                    speakOut();
+                    break;
+                case "O":
+                    informations = oeuvre.getDescription();
+                    speakOut();
+                    break;
+                case "J":
+                    informations = oeuvre.getAudiodescription();
+                    speakOut();
+                    break;
+                case "Z":
+                    stopSpeak();
+                    finish();
+                    break;
+                default:
+                    break;
+            }
         }
 
         currentGesture = new Gesture();
@@ -122,5 +164,25 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
                 img.setImageBitmap(null);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        stopSpeak();
+        finish();
+    }
+
+
+    public void speakOut() {
+        stopSpeak();
+        if(PermissionHandler.checkPermission(this,PermissionHandler.RECORD_AUDIO)) {
+            speaker.speak(this.informations);
+        }else {
+            PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,this);
+        }
+    }
+
+    public void stopSpeak(){
+        speaker.stop();
     }
 }

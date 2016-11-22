@@ -8,21 +8,24 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:weightSum="1">
 
         <Button
             android:text="@string/enfant_categorie_fragment"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="170dp"
+            android:layout_height="445dp"
             android:id="@+id/btnEnfant"
-            android:layout_weight="1" />
+            android:hapticFeedbackEnabled="true"
+            android:layout_gravity="center" />
 
         <Button
             android:text="@string/adulte_categorie_fragment"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="170dp"
+            android:layout_height="445dp"
             android:id="@+id/btnAdulte"
-            android:layout_weight="1" />
+            android:hapticFeedbackEnabled="true"
+            android:layout_gravity="center" />
     </LinearLayout>
 
 </FrameLayout>

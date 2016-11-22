@@ -10,6 +10,8 @@ public class Oeuvre {
     private String description;
     private String dateCreation;
     private String artiste;
+    private String infoArtiste;
+    private String audiodescription;
 
     public Oeuvre(){
         nom = "";
@@ -18,11 +20,13 @@ public class Oeuvre {
         artiste = "";
     }
 
-    public Oeuvre(String nom, String description, String creation, String artiste){
+    public Oeuvre(String nom, String description, String creation, String artiste, String infoArtiste, String audiodescription){
         this.nom = nom;
         this.description = description;
         this.dateCreation = creation;
         this.artiste = artiste;
+        this.infoArtiste = infoArtiste;
+        this.audiodescription = audiodescription;
     }
 
     public String getDescription() {
@@ -57,11 +61,22 @@ public class Oeuvre {
         this.artiste = artiste;
     }
 
+    public String getInfoArtiste() { return infoArtiste; }
+
+    public void setInfoArtiste(String info) {
+        this.infoArtiste = info;
+    }
+
+    public String getAudiodescription() { return audiodescription; }
+
+    public void setAudiodescription(String audio) {
+        this.audiodescription = audio;
+    }
+
     public String toString(){
         return "Nom de l'oeuvre: \n" + this.nom + "\n\n"
                 + "Artiste: \n" + this.artiste + "\n\n"
-                + "Date de création: \n" + this.dateCreation + "\n\n"
-                + "Description: \n" + this.description + "\n\n";
+                + "Date de création: \n" + this.dateCreation + "\n\n";
     }
 
 

@@ -1,17 +1,59 @@
 <?xml version="1.0"?>
 <oeuvres>
    <oeuvre>
-      <nom>La Joconde</nom>
-      <artiste>Leonard de Vinci</artiste>
-      <description>La Joconde est le portrait d'une jeune femme, sur fond d'un paysage montagneux aux horizons lointains et brumeux. Elle est disposee de trois-quarts et representee jusqu'a la taille, bras et mains compris, regardant le spectateur, ce qui est relativement nouveau a l'epoque et rompt avec les portraits jusque la repandus, qui coupent le buste a hauteur des epaules ou de la poitrine et sont entierement de profil.</description>
+      <nom>
+         La Joconde
+      </nom>
+      <artiste>
+         Léonard de Vinci
+      </artiste>
+      <description>
+         La Joconde, ou Portrait de Mona Lisa, est un tableau de l'artiste italien Léonard de Vinci.
+         Réalisé entre 1503 et 1506, il représente un portrait mi-corps, probablement celui de la florentine Lisa Gherardini, épouse de Francesco del Giocondo.
+         La Joconde est l'un des rares tableaux attribués de façon certaine à Léonard de Vinci.
+      </description>
 	  <date>1506</date>
+      <infoArtiste>
+         Léonard de Vinci est souvent décrit comme l’archétype et le symbole de l’homme de la Renaissance.
+         Un génie universel, un philosophe humaniste, observateur et expérimentateur.
+         Nombre d'auteurs et d'historiens le considèrent comme l'un des plus grands peintres de tous les temps,
+         et certains comme la personne la plus talentueuse dans le plus grand nombre de domaines différents ayant jamais vécu.
+      </infoArtiste>
+      <audiodescription>
+         La Joconde est le portrait d'une jeune femme, sur fond d'un paysage montagneux aux horizons lointains et brumeux.
+         Elle est disposée de trois-quarts et est représentée jusqu'a la taille, bras et mains compris, regardant le spectateur.
+         Cela est relativement nouveau a l'epoque et rompt avec les portraits jusque la repandus,
+         qui coupent le buste a hauteur des epaules ou de la poitrine et sont entierement de profil.
+      </audiodescription>
    </oeuvre>
 	
    <oeuvre>
-      <nom>Le Cri</nom>
-      <artiste>Edvard Munch</artiste>
-      <description>Munch executa quatre versions du tableau, dont les plus fameuses sont une tempera sur carton au musee Munch d'Oslo (de 83,52 cm de haut sur 66 cm de large), et une peinture a l'huile, tempera et pastel a la Galerie nationale d'Oslo (91 cm de haut sur 73,5 cm de large). Une troisieme version appartient egalement au musee Munch</description>
+      <nom>
+         Le Cri
+      </nom>
+      <artiste>
+         Edvard Munch
+      </artiste>
+      <description>
+         Le Cri est une œuvre expressionniste de l'artiste norvégien Edvard Munch.
+         Il en existe cinq versions, réalisées entre 1893 et 1917.
+         Symbolisant l'homme moderne emporté par une crise d'angoisse existentielle, elle est considérée comme l'œuvre la plus importante de l'artiste.
+      </description>
 	  <date>1893</date>
+      <infoArtiste>
+         Edvard Munch peut être considéré comme le pionnier de l'expressionnisme dans la peinture moderne.
+         Ses techniques de prédilection sont essentiellement la peinture et la tempera sur carton.
+         Il est aussi un pionnier de l'art accessible à tous, un art dévoilé, montré et non caché, dans les rues et les espaces publics, dans les lieux de nature.
+      </infoArtiste>
+      <audiodescription>
+         Le personnage central est représenté comme une sorte de mélange entre un fantôme dont le corps ondule et flotte dans les airs,
+         et un cadavre de par sa tête dépourvue de cheveux, ses yeux creux et sa bouche grand ouverte.
+         Sa bouche laisse penser qu'il est en train de crier, pourtant en même temps il se bouche les oreilles.
+         Ce qui pourrait nous faire penser à une sorte de cri intérieur que l'artiste a essayer de représenter.
+         Un cri pour montrer sa peur de la maladie et de la mort et par la même occasion de sa solitude d'où l'éloignement par rapport aux autres personnages.
+         On pourrait aussi renforcer l'idée de la mort par la position à gauche des hommes et à droite du précipice (l'enfer) et de la barre verticale marquant un arrêt : la mort.
+         Enfin on peut remarquer qu'aucune partie de ce tableau est complètement claire et nette, on a l'impression qu'un flou est présent sur toute l'image. Autant les personnages au loin que les bateaux, le village ou même que le personnage central du premier plan.
+      </audiodescription>
    </oeuvre>
 	
 </oeuvres>

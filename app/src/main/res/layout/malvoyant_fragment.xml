@@ -13,14 +13,14 @@
         <Button
             android:text="@string/quitter_malvoyant_fragment"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:id="@+id/btnQuit"
             android:layout_weight="1" />
 
         <Button
             android:text="@string/suivant_malvoyant_fragment"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:id="@+id/btnNext"
             android:layout_weight="1" />
     </LinearLayout>
@@ -29,7 +29,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hint_malvoyant_fragment"
-        android:layout_gravity="center"
+        android:layout_gravity="top|center"
+        android:textSize="18dp"
+        android:textColor="@android:color/white"
+        android:paddingRight="5dp"
         android:gravity="center_horizontal" />
 
 

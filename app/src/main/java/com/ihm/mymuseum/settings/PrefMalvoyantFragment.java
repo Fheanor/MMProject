@@ -74,6 +74,7 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
             public void onClick(View v) {
                 stopSpeechRecognition();
                 Tools.setPreference(getActivity(), getString(R.string.pref_audio_mode),false);
+                Tools.isMalvoyant = false;
                 Fragment fg = PrefCategorieFragment.newInstance("","");
                 listener.onLoadFragment(fg);
             }
@@ -97,7 +98,7 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
 
     private void stopSpeechRecognition() {
         if(PermissionHandler.checkPermission(getActivity(),PermissionHandler.RECORD_AUDIO)) {
-            if(speechManager!=null) {
+            if(speechManager != null) {
                 speechManager.destroy();
                 speechManager = null;
             }
@@ -163,6 +164,7 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
                                 Log.i(TAG, "Keyword recognised : " + this.result);
                                 // Set the configuration, Give the next instruction and listen again
                                 Tools.configSelects=true;
+                                Tools.isMalvoyant=true;
                                 Tools.setPreference(getActivity(),getString(R.string.pref_audio_mode),true);
                                 speakOut();
                                 break;

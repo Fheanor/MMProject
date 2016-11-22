@@ -27,6 +27,9 @@ public class Tools {
     public static boolean configSelects = false;
     public static boolean userSelects = false;
     public static boolean isEnfant = false;
+    public static boolean isMalvoyant = false;
+    public static String oeuvre;
+    public static boolean initGesture=false;
 
 
     public static List<Oeuvre> getOeuvres(AssetManager am, String filename){
@@ -47,7 +50,9 @@ public class Tools {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element elem = (Element) node;
                     Oeuvre oeuvre = new Oeuvre(getValue("nom", elem), getValue("description", elem),
-                                                getValue("date", elem), getValue("artiste", elem));
+                                                getValue("date", elem), getValue("artiste", elem),
+                                                getValue("infoArtiste", elem),
+                                                getValue("audiodescription", elem));
                     oeuvres.add(oeuvre);
                 }
             }

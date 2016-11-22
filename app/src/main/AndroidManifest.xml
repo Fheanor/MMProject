@@ -31,7 +31,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".menu.RadialMenuActivity" android:label="Radial Menu V2"/>
-        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>

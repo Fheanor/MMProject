@@ -17,17 +17,21 @@ import android.widget.Toast;
 
 import com.ihm.mymuseum.gesture.GestureActivity;
 import com.ihm.mymuseum.qrcode.QrCodeActivity;
+import com.ihm.mymuseum.speaker.Speaker;
+import com.ihm.mymuseum.voiceCommands.PermissionHandler;
 
 import java.util.List;
 import java.util.logging.Logger;
 
 public class Main extends Activity {
+
+
     private static final int CAMERA_PERMISSION = 1;
     private Class<?> classActivity;
 
-    private List<Oeuvre> oeuvres;
+    //private List<Oeuvre> oeuvres;
 
-    private boolean isInitialized = false;
+    //private boolean isInitialized = false;
     private boolean doubleBackToExitPressedOnce = false;
 
     private TextView tv;
@@ -39,7 +43,7 @@ public class Main extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         //setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -49,21 +53,22 @@ public class Main extends Activity {
                 launchActivity(QrCodeActivity.class);
             }
         });
-        oeuvres = Tools.getOeuvres(getAssets(), "Oeuvres.xml");
+        //oeuvres = Tools.getOeuvres(getAssets(), "Oeuvres.xml");
 
-        tv = (TextView) findViewById(R.id.showPrefTxt);
+        //tv = (TextView) findViewById(R.id.showPrefTxt);
 
-        String audioMode = "Mode audio: " + String.valueOf(Tools.getPreferrence(this).getBoolean(getString(R.string.pref_audio_mode),false));
-        String categorie = "Catégorie: " + Tools.getPreferrence(this).getString(getString(R.string.pref_categorie),"category not assigned");
-        tv.setText( audioMode + "\n" + categorie);
+        //String audioMode = "Mode audio: " + String.valueOf(Tools.getPreferrence(this).getBoolean(getString(R.string.pref_audio_mode),false));
+        //String categorie = "Catégorie: " + Tools.getPreferrence(this).getString(getString(R.string.pref_categorie),"category not assigned");
+        //tv.setText( audioMode + "\n" + categorie);
 
+        /*
         ((Button)findViewById(R.id.btnGesture)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Main.this, GestureActivity.class));
             }
         });
-
+        */
     }
 
     public void launchActivity(Class<?> cActivity) { //TODO
@@ -93,7 +98,7 @@ public class Main extends Activity {
                 return;
         }
     }
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == QrCodeActivity.CODE_REQUEST) {
@@ -109,7 +114,7 @@ public class Main extends Activity {
             }
         }
     }
-
+*/
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -127,5 +132,6 @@ public class Main extends Activity {
             }
         }, 1000);
     }
+
 
 }

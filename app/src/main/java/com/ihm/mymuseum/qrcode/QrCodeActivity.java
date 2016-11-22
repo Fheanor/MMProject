@@ -9,6 +9,10 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.ihm.mymuseum.R;
 import com.ihm.mymuseum.Tools;
+import com.ihm.mymuseum.gesture.GestureActivity;
+import com.ihm.mymuseum.menu.RadialMenuActivity;
+import com.ihm.mymuseum.speaker.Speaker;
+import com.ihm.mymuseum.voiceCommands.PermissionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +24,15 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
     public static final String SELECTED_FORMATS = "SELECTED_FORMATS";
     private static final String CAMERA_ID = "CAMERA_ID";
 
+    private Speaker speaker;
+
     private ZXingScannerView mScannerView;
     private boolean mFlash;
     private boolean mAutoFocus;
     private ArrayList<Integer> mSelectedIndices;
     private int mCameraId = -1; //Default camera : Rear_camera
 
+    public String informations;
     public static final String MESSAGE = "message";
     public static final int CODE_OK = 1;
     public static final int CODE_REQUEST = Tools.randomInt();
@@ -44,6 +51,8 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
             mSelectedIndices = null;
             mCameraId = -1;
         }
+
+        speaker = new Speaker(this);
 
         setContentView(R.layout.qrcode_activity);
 
@@ -76,7 +85,21 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
         Intent intent = new Intent();
         intent.putExtra(MESSAGE, rawResult.getText());
         setResult(CODE_OK, intent);
-        finish();
+        // Launch the circular menu !
+        //finish();
+        Tools.oeuvre=rawResult.getText();
+        if(!Tools.isMalvoyant) {
+            startActivity(new Intent(this, RadialMenuActivity.class));
+        }else{
+            this.informations = Tools.oeuvre;
+            speakOut();
+            if(!Tools.initGesture) {
+                this.informations = speaker.readFile(R.raw.gesturemode);
+                speakOut();
+                Tools.initGesture=true;
+            }
+            startActivity(new Intent(this, GestureActivity.class));
+        }
     }
 
     public void setupFormats() {
@@ -100,5 +123,13 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
     public void onPause() {
         super.onPause();
         mScannerView.stopCamera();
+    }
+
+    public void speakOut() {
+        if(PermissionHandler.checkPermission(this,PermissionHandler.RECORD_AUDIO)) {
+            speaker.speak(this.informations);
+        }else {
+            PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,this);
+        }
     }
 }
