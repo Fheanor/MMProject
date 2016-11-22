@@ -1,10 +1,12 @@
 package com.ihm.mymuseum.menu;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.widget.FrameLayout;
 
-import com.ihm.mymuseum.Oeuvre;
+import com.ihm.mymuseum.R;
 import com.ihm.mymuseum.Tools;
 import com.ihm.mymuseum.speaker.Speaker;
 import com.ihm.mymuseum.voiceCommands.PermissionHandler;
@@ -12,12 +14,7 @@ import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuItem;
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuRenderer;
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuRenderer.OnRadailMenuClick;
 
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.widget.FrameLayout;
-
-import com.ihm.mymuseum.R;
+import java.util.ArrayList;
 
 /**
  *
@@ -117,4 +114,11 @@ public class RadialMenuActivity extends FragmentActivity {
 	public void stopSpeak(){
 		speaker.stop();
 	}
+
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		speaker.destroy();
+	}
+
 }

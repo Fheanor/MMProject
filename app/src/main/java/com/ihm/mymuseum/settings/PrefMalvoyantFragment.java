@@ -72,6 +72,7 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
             @Override
             public void onClick(View v) {
                 stopSpeechRecognition();
+                speaker.destroy();
                 Tools.setPreference(R.string.pref_audio_mode, false);
                 Fragment fg = PrefCategorieFragment.newInstance("","");
                 listener.onLoadFragment(fg);
@@ -268,6 +269,12 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
                 }
             }, 100);
         }
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        speaker.destroy();
     }
 
 }

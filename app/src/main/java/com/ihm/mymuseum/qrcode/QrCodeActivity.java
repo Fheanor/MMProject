@@ -140,4 +140,10 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
             PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,this);
         }
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        speaker.destroy();
+    }
 }

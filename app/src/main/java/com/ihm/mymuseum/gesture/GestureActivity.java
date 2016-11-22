@@ -14,14 +14,12 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.ihm.mymuseum.Oeuvre;
 import com.ihm.mymuseum.R;
 import com.ihm.mymuseum.Tools;
 import com.ihm.mymuseum.speaker.Speaker;
 import com.ihm.mymuseum.voiceCommands.PermissionHandler;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import static android.content.ContentValues.TAG;
@@ -174,5 +172,11 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
 
     public void stopSpeak(){
         speaker.stop();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        speaker.destroy();
     }
 }
