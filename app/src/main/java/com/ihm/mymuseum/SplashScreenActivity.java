@@ -39,6 +39,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        Tools.setContext(getApplicationContext());
     }
 
 }

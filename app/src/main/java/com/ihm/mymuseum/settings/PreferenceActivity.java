@@ -32,7 +32,6 @@ public class PreferenceActivity extends Activity implements PreferenceFragment.O
             isInitialized = true;
             startActivity(new Intent(this, SplashScreenActivity.class));
         }
-
         Fragment fg = PrefMalvoyantFragment.newInstance("","");
         onLoadFragment(fg);
     }

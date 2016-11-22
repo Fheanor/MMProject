@@ -52,16 +52,16 @@ public class PrefCategorieFragment extends PreferenceFragment implements View.On
 
             switch (((Button)v).getId()){
                 case R.id.btnEnfant:
-                    value = getString(R.string.pref_value_enfant);
+                    value = getString(R.string.pref_value_child);
                     break;
                 case R.id.btnAdulte:
-                    value = getString(R.string.pref_value_adulte);
+                    value = getString(R.string.pref_value_adult);
                     break;
                 default:
                     return;
             }
 
-            Tools.setPreference(getActivity(), getString(R.string.pref_categorie), value);
+            Tools.setPreference(R.string.pref_category, value);
             listener.onLoadActivity(getActivity(), Main.class);
         }
     }

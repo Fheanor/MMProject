@@ -3,6 +3,7 @@ package com.ihm.mymuseum;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.support.annotation.StringRes;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -23,15 +24,18 @@ public class Tools {
 
     private static final String PREFERENCE_NAME = "Settings";
 
+    private static Context context;
+
     /*TODO : use SharedPreferences instead of this ! */
     public static boolean configSelects = false;
     public static boolean userSelects = false;
-    public static boolean isEnfant = false;
-    public static boolean isMalvoyant = false;
     public static Oeuvre oeuvre;
     public static boolean initGesture=false;
     public static String currentInfo="";
 
+    public static void setContext(Context context){
+        Tools.context = context;
+    }
 
     public static List<Oeuvre> getOeuvres(AssetManager am, String filename){
         List<Oeuvre> oeuvres = new ArrayList<>();
@@ -68,9 +72,11 @@ public class Tools {
         return node.getNodeValue();
     }
 
-    public static void setPreference(Context context, String key, Object value){
+    public static void setPreference(int keyId, Object value){
         SharedPreferences sharedPref = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
+        String key = getString(keyId);
+
         if(value instanceof Integer){
             editor.putInt(key, (int)value);
         }else if(value instanceof Boolean) {
@@ -87,12 +93,22 @@ public class Tools {
         editor.commit();
     }
 
-    public static SharedPreferences getPreferrence(Context context){
-        return context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+    public static boolean getBooleanFromPreference(int resId, boolean defaultValue){
+        return context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+                .getBoolean(getString(resId), defaultValue);
+    }
+
+    public static String getStringFromPreference(int resId, String defaultValue){
+        return context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+                .getString(getString(resId), defaultValue);
     }
 
     public static int randomInt(){
         return (int)Math.random()*10000;
+    }
+
+    private static final String getString(@StringRes int resId) {
+        return context.getResources().getString(resId);
     }
 
 }

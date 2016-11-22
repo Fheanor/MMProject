@@ -96,7 +96,7 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
                 Tools.oeuvre = oeuvre;
             }
         }
-        if(!Tools.isMalvoyant) {
+        if(!Tools.getBooleanFromPreference(R.string.pref_audio_mode, false)) {
             startActivity(new Intent(this, RadialMenuActivity.class));
         }else{
             this.informations = Tools.oeuvre.getNom();
