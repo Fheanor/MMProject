@@ -1,0 +1,2 @@
+Pour accéder aux informations sur l'oeuvre veuillez dessiner un "O" sur l'écran.
+Pour accéder aux informations sur l'artiste, veuillez dessiner un "A" sur l'écran.
