@@ -1,10 +1,12 @@
 package com.ihm.mymuseum;
 
+import java.io.Serializable;
+
 /**
  * Created by Julian on 15/11/2016.
  */
 
-public class Oeuvre {
+public class Oeuvre implements Serializable {
 
     private String nom;
     private String description;

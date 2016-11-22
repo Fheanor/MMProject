@@ -273,6 +273,13 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        speaker = new Speaker(getActivity());
+        startSpeechRecognition();
+    }
+
+    @Override
     public void onDestroy(){
         super.onDestroy();
         speaker.destroy();

@@ -1,6 +1,8 @@
 package com.ihm.mymuseum.gesture;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.gesture.Gesture;
 import android.gesture.GestureLibraries;
 import android.gesture.GestureLibrary;
@@ -14,11 +16,12 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.ihm.mymuseum.Oeuvre;
 import com.ihm.mymuseum.R;
-import com.ihm.mymuseum.Tools;
 import com.ihm.mymuseum.speaker.Speaker;
 import com.ihm.mymuseum.voiceCommands.PermissionHandler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -32,12 +35,13 @@ import static com.ihm.mymuseum.R.raw.gesture;
 
 public class GestureActivity extends Activity implements GestureTimer.OnFinishedListener {
 
-    private GestureTimer timer;
+    private static final String PARAM_OEUVRE = "oeuvre";
+    private Oeuvre oeuvre;
 
+    private GestureTimer timer;
     private static final int MAX_TIME = 1000;
 
     private Gesture currentGesture;
-
     private GestureLibrary gLib;
 
     private ImageView img;
@@ -48,6 +52,15 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         speaker = new Speaker(this);
+
+        if(savedInstanceState != null){
+            oeuvre = (Oeuvre)savedInstanceState.getSerializable(PARAM_OEUVRE);
+        } else {
+            Bundle b = getIntent().getExtras();
+            if(b != null){
+                oeuvre = (Oeuvre)b.getSerializable(PARAM_OEUVRE);
+            }
+        }
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_gesture);
@@ -83,8 +96,6 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
                     currentGesture.addStroke(gs);
                 }
 
-
-
                 img.setImageBitmap(currentGesture.toBitmap(50,50,1, R.color.color_splash));
                 timer.setIsGestureFinished(true);
             }
@@ -100,12 +111,6 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
     @Override
     public void onFinished(){
         ArrayList<Prediction> predictions = gLib.recognize(currentGesture);
-
-        Logger.getAnonymousLogger().info("GESTURE PREDICTION : " + predictions.size());
-        /*
-        for(Prediction p : predictions){
-            Logger.getAnonymousLogger().info(p.name + " "+ p.score);
-        }*/
 
         // one prediction needed
         if (predictions.size() > 0) {
@@ -126,16 +131,13 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
 
             switch (prediction.name){
                 case "A":
-                    Tools.currentInfo = Tools.oeuvre.getInfoArtiste();
-                    speakOut();
+                    speakOut(oeuvre.getInfoArtiste());
                     break;
                 case "O":
-                    Tools.currentInfo = Tools.oeuvre.getDescription();
-                    speakOut();
+                    speakOut(oeuvre.getDescription());
                     break;
                 case "J":
-                    Tools.currentInfo = Tools.oeuvre.getAudiodescription();
-                    speakOut();
+                    speakOut(oeuvre.getAudiodescription());
                     break;
                 case "Z":
                     stopSpeak();
@@ -161,10 +163,10 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
     }
 
 
-    public void speakOut() {
+    public void speakOut(String informations) {
         stopSpeak();
         if(PermissionHandler.checkPermission(this,PermissionHandler.RECORD_AUDIO)) {
-            speaker.speak(Tools.currentInfo);
+            speaker.speak(informations);
         }else {
             PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,this);
         }
@@ -178,5 +180,16 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
     public void onDestroy(){
         super.onDestroy();
         speaker.destroy();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstance){
+        savedInstance.putSerializable(PARAM_OEUVRE, oeuvre);
+    }
+
+    public static Intent buildActivity(Context context, Serializable oeuvre){
+        Intent intent = new Intent(context, GestureActivity.class);
+        intent.putExtra(PARAM_OEUVRE, oeuvre);
+        return intent;
     }
 }

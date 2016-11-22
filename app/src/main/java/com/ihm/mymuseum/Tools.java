@@ -25,27 +25,22 @@ public class Tools {
     private static final String PREFERENCE_NAME = "Settings";
 
     private static Context context;
+    private static AssetManager am;
 
-    /*TODO : use SharedPreferences instead of this ! */
-    public static Oeuvre oeuvre;
-    public static boolean initGesture=false;
-    public static String currentInfo="";
 
-    public static void setContext(Context context){
+    public static void setPreferenceParameters(Context context, AssetManager am){
         Tools.context = context;
+        Tools.am = am;
         Tools.initPreferences();
     }
 
-    public static List<Oeuvre> getOeuvres(AssetManager am, String filename){
+    public static List<Oeuvre> getOeuvres(String filename){
         List<Oeuvre> oeuvres = new ArrayList<>();
 
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(am.open(filename));
-
-            /*Element element=doc.getDocumentElement();
-            element.normalize();*/
 
             NodeList nList = doc.getElementsByTagName("oeuvre");
 

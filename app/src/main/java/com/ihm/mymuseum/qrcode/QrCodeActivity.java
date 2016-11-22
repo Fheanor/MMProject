@@ -1,7 +1,6 @@
 package com.ihm.mymuseum.qrcode;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
@@ -34,7 +33,6 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
     private ArrayList<Integer> mSelectedIndices;
     private int mCameraId = -1; //Default camera : Rear_camera
 
-    public String informations;
     public static final String MESSAGE = "message";
     public static final int CODE_OK = 1;
     public static final int CODE_REQUEST = Tools.randomInt();
@@ -42,7 +40,7 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
-        oeuvres = Tools.getOeuvres(this.getAssets(), "Oeuvres.xml");
+        oeuvres = Tools.getOeuvres("Oeuvres.xml");
         if(state != null) {
             mFlash = state.getBoolean(FLASH_STATE, false);
             mAutoFocus = state.getBoolean(AUTO_FOCUS_STATE, true);
@@ -85,28 +83,22 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
 
     @Override
     public void handleResult(Result rawResult) {
-        Intent intent = new Intent();
-        intent.putExtra(MESSAGE, rawResult.getText());
-        setResult(CODE_OK, intent);
-        // Launch the circular menu !
-        //finish();
+        Oeuvre oeuvre = new Oeuvre();
+
         String result = rawResult.getText();
-        for(Oeuvre oeuvre : oeuvres) {
-            if (oeuvre.getNom().equals(result)) {
-                Tools.oeuvre = oeuvre;
+        for(Oeuvre o : oeuvres) {
+            if (o.getNom().equals(result)) {
+                oeuvre = o;
+                break;
             }
         }
+
         if(!Tools.getBooleanFromPreference(R.string.pref_audio_mode, false)) {
-            startActivity(new Intent(this, RadialMenuActivity.class));
+            startActivity(RadialMenuActivity.buildActivity(this, oeuvre));
         }else{
-            this.informations = Tools.oeuvre.getNom();
-            speakOut();
-            if(!Tools.initGesture) {
-                this.informations = speaker.readFile(R.raw.gesturemode);
-                speakOut();
-                Tools.initGesture=true;
-            }
-            startActivity(new Intent(this, GestureActivity.class));
+            speakOut(oeuvre.getNom());
+            speakOut(speaker.readFile(R.raw.gesturemode));
+            startActivity(GestureActivity.buildActivity(this, oeuvre));
         }
     }
 
@@ -133,9 +125,9 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
         mScannerView.stopCamera();
     }
 
-    public void speakOut() {
+    public void speakOut(String informations) {
         if(PermissionHandler.checkPermission(this,PermissionHandler.RECORD_AUDIO)) {
-            speaker.speak(this.informations);
+            speaker.speak(informations);
         }else {
             PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,this);
         }

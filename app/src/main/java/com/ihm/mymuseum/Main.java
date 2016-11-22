@@ -9,18 +9,12 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ihm.mymuseum.gesture.GestureActivity;
 import com.ihm.mymuseum.qrcode.QrCodeActivity;
-import com.ihm.mymuseum.speaker.Speaker;
-import com.ihm.mymuseum.voiceCommands.PermissionHandler;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 public class Main extends Activity {
@@ -43,8 +37,6 @@ public class Main extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
-        //setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,22 +45,6 @@ public class Main extends Activity {
                 launchActivity(QrCodeActivity.class);
             }
         });
-        //oeuvres = Tools.getOeuvres(getAssets(), "Oeuvres.xml");
-
-        //tv = (TextView) findViewById(R.id.showPrefTxt);
-
-        //String audioMode = "Mode audio: " + String.valueOf(Tools.getPreferrence(this).getBoolean(getString(R.string.pref_audio_mode),false));
-        //String categorie = "Catégorie: " + Tools.getPreferrence(this).getString(getString(R.string.pref_categorie),"category not assigned");
-        //tv.setText( audioMode + "\n" + categorie);
-
-        /*
-        ((Button)findViewById(R.id.btnGesture)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Main.this, GestureActivity.class));
-            }
-        });
-        */
     }
 
     public void launchActivity(Class<?> cActivity) { //TODO

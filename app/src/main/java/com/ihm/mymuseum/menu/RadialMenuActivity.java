@@ -1,25 +1,31 @@
 package com.ihm.mymuseum.menu;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.widget.FrameLayout;
 
+import com.ihm.mymuseum.Oeuvre;
 import com.ihm.mymuseum.R;
-import com.ihm.mymuseum.Tools;
 import com.ihm.mymuseum.speaker.Speaker;
 import com.ihm.mymuseum.voiceCommands.PermissionHandler;
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuItem;
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuRenderer;
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuRenderer.OnRadailMenuClick;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  */
 public class RadialMenuActivity extends FragmentActivity {
+
+	private static final String PARAM_OEUVRE = "oeuvre";
+	private Oeuvre oeuvre;
 
 	private Speaker speaker;
 
@@ -31,10 +37,18 @@ public class RadialMenuActivity extends FragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_holder);
 		speaker = new Speaker(this);
+		Bundle b;
+
+		if(savedInstanceState != null){
+			oeuvre = (Oeuvre)savedInstanceState.getSerializable(PARAM_OEUVRE);
+		} else if( (b = getIntent().getExtras()) != null){
+			oeuvre = (Oeuvre)b.getSerializable(PARAM_OEUVRE);
+		} else {
+			oeuvre = new Oeuvre();
+		}
 
 		//Init the frame layout
 		mHolderLayout = (FrameLayout) findViewById(R.id.fragment_container);
@@ -59,10 +73,10 @@ public class RadialMenuActivity extends FragmentActivity {
 			@Override
 			public void onRadailMenuClickedListener(String id) {
 				//Can edit based on preference. Also can add animations here.
+				String info = oeuvre.getDescription();
 				getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-				Tools.currentInfo = Tools.oeuvre.getDescription();
-				getSupportFragmentManager().beginTransaction().replace(mHolderLayout.getId(), new RadialMenuOeuvreFragment()).commit();
-				speakOut();
+				getSupportFragmentManager().beginTransaction().replace(mHolderLayout.getId(), RadialMenuOeuvreFragment.newInstance(oeuvre, info)).commit();
+				speakOut(info);
 			}
 		});
 
@@ -70,10 +84,10 @@ public class RadialMenuActivity extends FragmentActivity {
 			@Override
 			public void onRadailMenuClickedListener(String id) {
 				//Can edit based on preference. Also can add animations here.
+				String info = oeuvre.getInfoArtiste();
 				getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-				Tools.currentInfo = Tools.oeuvre.getInfoArtiste();
-				getSupportFragmentManager().beginTransaction().replace(mHolderLayout.getId(), new RadialMenuOeuvreFragment()).commit();
-				speakOut();
+				getSupportFragmentManager().beginTransaction().replace(mHolderLayout.getId(), RadialMenuOeuvreFragment.newInstance(oeuvre, info)).commit();
+				speakOut(info);
 			}
 		});
 
@@ -92,7 +106,7 @@ public class RadialMenuActivity extends FragmentActivity {
 		super.onResume();
 		//Init with home fragment
 		getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-		getSupportFragmentManager().beginTransaction().replace(mHolderLayout.getId(), new RadialMenuMainFragment()).commit();
+		getSupportFragmentManager().beginTransaction().replace(mHolderLayout.getId(), RadialMenuMainFragment.newInstance(oeuvre)).commit();
 	}
 
 	@Override
@@ -102,10 +116,10 @@ public class RadialMenuActivity extends FragmentActivity {
 	}
 
 
-	public void speakOut() {
+	public void speakOut(String informations) {
 		stopSpeak();
 		if(PermissionHandler.checkPermission(this,PermissionHandler.RECORD_AUDIO)) {
-			speaker.speak(Tools.currentInfo);
+			speaker.speak(informations);
 		}else {
 			PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,this);
 		}
@@ -119,6 +133,17 @@ public class RadialMenuActivity extends FragmentActivity {
 	public void onDestroy(){
 		super.onDestroy();
 		speaker.destroy();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstance){
+		savedInstance.putSerializable(PARAM_OEUVRE, oeuvre);
+	}
+
+	public static Intent buildActivity(Context context, Serializable oeuvre){
+		Intent intent = new Intent(context, RadialMenuActivity.class);
+		intent.putExtra(PARAM_OEUVRE, oeuvre);
+		return intent;
 	}
 
 }
