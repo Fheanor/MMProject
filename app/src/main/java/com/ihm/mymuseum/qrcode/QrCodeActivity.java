@@ -2,6 +2,7 @@ package com.ihm.mymuseum.qrcode;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.ViewGroup;
 
 import com.google.zxing.BarcodeFormat;
@@ -97,6 +98,8 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
             finish();
             return;
         }
+
+        ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(800);
 
         if(!Tools.getBooleanFromPreference(R.string.pref_audio_mode, false)) {
             startActivity(RadialMenuActivity.buildActivity(this, oeuvre));
