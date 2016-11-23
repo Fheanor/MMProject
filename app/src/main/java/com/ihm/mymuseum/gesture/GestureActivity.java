@@ -95,8 +95,6 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
                 for(GestureStroke gs : overlay.getGesture().getStrokes()){
                     currentGesture.addStroke(gs);
                 }
-
-                img.setImageBitmap(currentGesture.toBitmap(50,50,1, R.color.color_splash));
                 timer.setIsGestureFinished(true);
             }
 
