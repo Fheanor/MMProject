@@ -58,6 +58,7 @@ public class RadialMenuActivity extends FragmentActivity {
 		menuOeuvreItem = new RadialMenuItem("Oeuvre", "Oeuvre");
 		menuQRCodeItem = new RadialMenuItem("QRCode","QRCode");
 		menuArtisteItem = new RadialMenuItem("Artiste","Artiste");
+		mRenderer.setMenuBackgroundColor(R.color.circular_menu_bg);
 
 		//Add the menu Items
 		mMenuItems.add(menuOeuvreItem);

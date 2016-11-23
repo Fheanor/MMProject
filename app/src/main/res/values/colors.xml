@@ -4,4 +4,5 @@
     <color name="viewfinder_laser">#ffcc0000</color>
     <color name="viewfinder_border">#ffafed44</color>
     <color name="color_splash">#3691d7</color>
+    <color name="circular_menu_bg">#000000</color>
 </resources>
