@@ -73,8 +73,6 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
 
         currentGesture = new Gesture();
 
-        img = (ImageView)findViewById(R.id.imageView2);
-
         final GestureOverlayView gestureView = (GestureOverlayView) findViewById(gestures);
 
         gestureView.addOnGestureListener(new GestureOverlayView.OnGestureListener() {
