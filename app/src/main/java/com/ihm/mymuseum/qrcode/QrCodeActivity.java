@@ -83,7 +83,7 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
 
     @Override
     public void handleResult(Result rawResult) {
-        Oeuvre oeuvre = new Oeuvre();
+        Oeuvre oeuvre = null;
 
         String result = rawResult.getText();
         for(Oeuvre o : oeuvres) {
@@ -91,6 +91,11 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
                 oeuvre = o;
                 break;
             }
+        }
+
+        if(oeuvre == null) { //Do something to inform that QrCode is wrong
+            finish();
+            return;
         }
 
         if(!Tools.getBooleanFromPreference(R.string.pref_audio_mode, false)) {
