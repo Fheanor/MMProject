@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Window;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ihm.mymuseum.Oeuvre;
@@ -43,8 +42,6 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
 
     private Gesture currentGesture;
     private GestureLibrary gLib;
-
-    private ImageView img;
 
     private Speaker speaker;
 
@@ -147,11 +144,6 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
         }
 
         currentGesture = new Gesture();
-        runOnUiThread(new Runnable() {
-            public void run() {
-                img.setImageBitmap(null);
-            }
-        });
     }
 
     @Override
