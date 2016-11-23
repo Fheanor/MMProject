@@ -76,7 +76,6 @@ public class Speaker implements TextToSpeech.OnInitListener {
 
     public String readFile(int rawfile) {
         String result = new String();
-        Log.i(TAG,"error");
         try {
             Resources res = context.getResources();
             InputStream input_stream = res.openRawResource(rawfile);

@@ -119,6 +119,7 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
                         setResults(results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION));
                         switch (this.result) {
                             case "mode audio":
+                            case "malvoyant":
                             case "malvoyants":
                             case "Malvoyant":
                             case "Malvoyants":
