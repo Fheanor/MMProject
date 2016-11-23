@@ -118,7 +118,7 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
             // checking prediction
             Logger.getAnonymousLogger().info("PREDICTION : "+prediction.name);
 
-            if (prediction.score > 1.0) {
+            if (prediction.score < 10.0) {
                 // and action
                 runOnUiThread(new Runnable() {
                     public void run() {
@@ -127,24 +127,26 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
                     }
                 });
 
-            }
+                switch (prediction.name){
+                    case "A":
+                        speakOut(oeuvre.getInfoArtiste());
+                        break;
+                    case "O":
+                        speakOut(oeuvre.getDescription());
+                        break;
+                    case "D":
+                        speakOut(oeuvre.getAudiodescription());
+                        break;
+                    case "R":
+                        stopSpeak();
+                        finish();
+                        break;
+                    default:
+                        break;
+                }
 
-            switch (prediction.name){
-                case "A":
-                    speakOut(oeuvre.getInfoArtiste());
-                    break;
-                case "O":
-                    speakOut(oeuvre.getDescription());
-                    break;
-                case "J":
-                    speakOut(oeuvre.getAudiodescription());
-                    break;
-                case "Z":
-                    stopSpeak();
-                    finish();
-                    break;
-                default:
-                    break;
+            }else{
+                speakOut(speaker.readFile(R.raw.gesturemode));
             }
         }
 
