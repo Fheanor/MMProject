@@ -108,6 +108,7 @@ public class Tools {
     private static void initPreferences(){
         setPreference(R.string.pref_audio_mode, false);
         setPreference(R.string.pref_category, "");
+        setPreference(R.string.pref_init_gesture,false);
     }
 
 }

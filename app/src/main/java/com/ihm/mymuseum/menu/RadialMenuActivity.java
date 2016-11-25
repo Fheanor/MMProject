@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.ihm.mymuseum.Oeuvre;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
  *
  */
 public class RadialMenuActivity extends FragmentActivity {
+
+	private static final String TAG = "RadialMenuActivity";
 
 	private static final String PARAM_OEUVRE = "oeuvre";
 	private Oeuvre oeuvre;
@@ -133,7 +136,20 @@ public class RadialMenuActivity extends FragmentActivity {
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
+		speaker.stop();
 		speaker.destroy();
+	}
+
+	@Override
+	public void onPause(){
+		super.onPause();
+		Log.i(TAG,"PAUSE");
+	}
+
+	@Override
+	public void onStop(){
+		super.onStop();
+		Log.i(TAG,"STOP");
 	}
 
 	@Override

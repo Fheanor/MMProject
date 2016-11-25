@@ -283,7 +283,14 @@ public class PrefMalvoyantFragment extends PreferenceFragment{
     @Override
     public void onDestroy(){
         super.onDestroy();
+        speaker.stop();
         speaker.destroy();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        speaker.stop();
     }
 
 }

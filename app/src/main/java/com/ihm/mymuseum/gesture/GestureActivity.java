@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.ihm.mymuseum.Oeuvre;
 import com.ihm.mymuseum.R;
+import com.ihm.mymuseum.qrcode.QrCodeActivity;
 import com.ihm.mymuseum.speaker.Speaker;
 import com.ihm.mymuseum.voiceCommands.PermissionHandler;
 
@@ -122,17 +123,18 @@ public class GestureActivity extends Activity implements GestureTimer.OnFinished
 
                 switch (prediction.name){
                     case "A":
-                        speakOut(oeuvre.getInfoArtiste());
+                        speakOut("L'artiste."+oeuvre.getInfoArtiste());
                         break;
                     case "O":
-                        speakOut(oeuvre.getDescription());
+                        speakOut("L'oeuvre."+oeuvre.getDescription());
                         break;
                     case "D":
-                        speakOut(oeuvre.getAudiodescription());
+                        speakOut("Audiodescription."+oeuvre.getAudiodescription());
                         break;
                     case "R":
+                        speakOut("Retour.");
                         stopSpeak();
-                        finish();
+                        startActivity(new Intent(this, QrCodeActivity.class));
                         break;
                     default:
                         break;

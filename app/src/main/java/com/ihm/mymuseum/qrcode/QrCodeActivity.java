@@ -3,6 +3,7 @@ package com.ihm.mymuseum.qrcode;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.google.zxing.BarcodeFormat;
@@ -105,7 +106,11 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
             startActivity(RadialMenuActivity.buildActivity(this, oeuvre));
         }else{
             speakOut(oeuvre.getNom());
-            speakOut(speaker.readFile(R.raw.gesturemode));
+            Log.i("QRCodeActivity",String.valueOf(Tools.getBooleanFromPreference(R.string.pref_init_gesture,false)));
+            if(!Tools.getBooleanFromPreference(R.string.pref_init_gesture,false)) {
+                speakOut(speaker.readFile(R.raw.gesturemode));
+                Tools.setPreference(R.string.pref_init_gesture, true);
+            }
             startActivity(GestureActivity.buildActivity(this, oeuvre));
         }
     }
@@ -131,6 +136,7 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
     public void onPause() {
         super.onPause();
         mScannerView.stopCamera();
+        //speaker.stop();
     }
 
     public void speakOut(String informations) {
@@ -142,8 +148,9 @@ public class QrCodeActivity extends Activity implements ZXingScannerView.ResultH
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
+        speaker.stop();
         speaker.destroy();
     }
 }
