@@ -1,1 +1,1 @@
-Veuillez dire "mode audio" pour activer le mode malvoyant.
+Veuillez dire "audio" pour activer le mode audio.

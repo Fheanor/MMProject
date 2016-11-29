@@ -140,17 +140,6 @@ public class RadialMenuActivity extends FragmentActivity {
 		speaker.destroy();
 	}
 
-	@Override
-	public void onPause(){
-		super.onPause();
-		Log.i(TAG,"PAUSE");
-	}
-
-	@Override
-	public void onStop(){
-		super.onStop();
-		Log.i(TAG,"STOP");
-	}
 
 	@Override
 	public void onSaveInstanceState(Bundle savedInstance){

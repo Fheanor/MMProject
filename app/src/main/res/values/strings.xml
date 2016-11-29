@@ -41,4 +41,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="oeuvre">Informations sur l\'oeuvre</string>
     <string name="gesture">Try to draw the gesture</string>
+    <string name="malvoyant">Say \"audio\" to activate audio mode.</string>
 </resources>
